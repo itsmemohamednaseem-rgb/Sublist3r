@@ -18,6 +18,30 @@ import socket
 import json
 from collections import Counter
 
+# Function to check and install dependencies
+def check_dependencies():
+    missing_modules = []
+    try:
+        import requests
+    except ImportError:
+        missing_modules.append('requests')
+    try:
+        import dns.resolver
+    except ImportError:
+        missing_modules.append('dnspython')
+    
+    if missing_modules:
+        print("\nError: Missing required modules: " + ", ".join(missing_modules))
+        print("\nPlease install the missing modules using one of these commands:")
+        print("\npip install " + " ".join(missing_modules))
+        print("pip3 install " + " ".join(missing_modules))
+        print("\nOr install all requirements using:")
+        print("pip install -r requirements.txt")
+        sys.exit(1)
+
+# Check dependencies before importing
+check_dependencies()
+
 # external modules
 from subbrute import subbrute
 import dns.resolver
@@ -34,9 +58,9 @@ else:
 # In case you cannot install some of the required development packages
 # there's also an option to disable the SSL warning:
 try:
-    import requests.packages.urllib3
-    requests.packages.urllib3.disable_warnings()
-except:
+    import urllib3
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+except ImportError:
     pass
 
 # Check if we are running this on windows platform
@@ -51,12 +75,14 @@ if is_windows:
     R = '\033[91m'  # red
     W = '\033[0m'   # white
     try:
-        import win_unicode_console , colorama
-        win_unicode_console.enable()
-        colorama.init()
-        #Now the unicode will work ^_^
-    except:
-        print("[!] Error: Coloring libraries not installed, no coloring will be used [Check the readme]")
+        try:
+            import colorama
+            colorama.init()
+        except ImportError:
+            print("[!] Optional: Install colorama for colored output (pip install colorama)")
+            G = Y = B = R = W = G = Y = B = R = W = ''
+    except Exception as e:
+        print("[!] Error with color handling:", str(e))
         G = Y = B = R = W = G = Y = B = R = W = ''
 
 
