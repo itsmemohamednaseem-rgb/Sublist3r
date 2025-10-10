@@ -102,7 +102,7 @@ def banner():
     print("""%s
                  ____        _     _ _     _   _____
                 / ___| _   _| |__ | (_)___| |_|___ / _ __
-                \\\___ \\| | | | '_ \\| | / __| __| |_ \\| '__|
+                \\___ \\| | | | '_ \\| | / __| __| |_ \\| '__|
                  ___) | |_| | |_) | | \\__ \\ |_ ___) | |
                 |____/ \\__,_|_.__/|_|_|___/\\__|____/|_|%s%s
 
@@ -1040,7 +1040,7 @@ def main(domain, threads, savefile, ports, silent, verbose, enable_bruteforce, e
         enable_bruteforce = True
 
     # Validate domain
-    domain_check = re.compile("^(http|https)?[a-zA-Z0-9]+([\-\.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$")
+    domain_check = re.compile(r"^(http|https)?[a-zA-Z0-9]+([-.]{1}[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$")
     if not domain_check.match(domain):
         if not silent:
             print(R + "Error: Please enter a valid domain" + W)
